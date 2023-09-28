@@ -28,8 +28,8 @@ passport.use(new LocalStrategy(
   (username, password, done) => {
     db.get('SELECT * FROM users WHERE username = ?', username, (err, user) => {
       if (err) return done(err);
-      if (!user) return done(null, false, { message: 'Incorrect username.' });
-      if (!bcrypt.compareSync(password, user.password)) return done(null, false, { message: 'Incorrect password.' });
+      if (!user) return done(null, false, { message: 'Incorrect username or register if you dont have an account' });
+      if (!bcrypt.compareSync(password, user.password)) return done(null, false, { message: 'Incorrect password or register if you dont have an account' });
       return done(null, user);
     });
   }
@@ -139,7 +139,7 @@ app.post('/register', (req, res) => {
   // Login route
   app.post('/login', passport.authenticate('local', {
     successRedirect: '/dashboard',
-    failureRedirect: '/register',
+    failureRedirect: '/login',
     failureFlash: true,
   }));
   app.get('/login', (req, res) => {
