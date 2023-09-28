@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/homepage.css"> <!-- Include your stylesheet -->
+    <title>Task Management App</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Task Manager</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <!-- <li><a href="/tasks">Tasks</a></li>  -->
+                <!-- Link to the tasks page -->
+                <!-- <li><a href="#">Profile</a></li> -->
+                <li><a href="/logout">Logout</a></li> <!-- Link to logout -->
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Task Manager</h1>
+            <p>Effortlessly manage your tasks.</p>
+        </section>
+
+        <!-- Task Creation Form -->
+        <section class="create-task">
+            <h2>Create New Task</h2>
+            <form action="/tasks/create" method="POST"> <!-- Link to your task creation route -->
+                <label for="taskName">Task Name:</label>
+                <input type="text" id="taskName" name="taskName" required>
+                
+                <label for="dueDate">Due Date:</label>
+                <input type="date" id="dueDate" name="dueDate" required>
+
+                <button type="submit">Create Task</button>
+            </form>
+        </section>
+
+         <!-- Display user's tasks -->
+        <section class="tasks">
+            <h2>Your Tasks</h2>
+            <ul>
+                <% tasks.forEach(function(task) { %>
+                    <li>
+                        <input type="checkbox" <% if (task.completed) { %>checked<% } %> disabled>
+                        <%= task.name %>
+                        <% if (task.due_date) { %>
+                            <span class="due-date">Due: <%= task.due_date %></span>
+                            <button class="complete-button">Complete</button>
+                        <% } %>
+                    </li>
+                <% }); %>
+            </ul>
+        </section>
+
+        <!-- List of Existing Tasks -->
+<section class="task-list">
+    <h2>Update your task detail</h2>
+    <ul>
+        <!-- Example Task Item -->
+        <% tasks.forEach(function(task) { %>
+            <li>
+                <input type="checkbox" id="task<%= task.id %>" name="task<%= task.id %>" class="task-checkbox" <% if (task.completed) { %>checked<% } %>>
+                <!-- <input type="checkbox" id="task<%= task.id %>" name="task<%= task.id %>" class="task-checkbox"> -->
+                <label for="task<%= task.id %>" class="task-name"><%= task.name %></label>
+                <div style="width: 5px;"></div>
+               
+                <span class="due-date">Due Date: <%= task.due_date %></span>
+                <div style="width: 15px;"></div>
+                <!-- Form for updating task -->
+                <form action="/tasks/update/<%= task.id %>" method="POST" class="update-form">
+                    <label for="newName<%= task.id %>">New Name:</label>
+                    <input type="text" id="newName<%= task.id %>" name="newName" required>
+                    <label for="newDueDate<%= task.id %>">New Due Date:</label>
+                    <input type="date" id="newDueDate<%= task.id %>" name="newDueDate" required>
+                    <button type="submit">Update the details of this task</button>
+                </form>
+                <div style="width: 40px;"></div>
+               
+                <!-- Form for marking task as completed -->
+                <form action="/tasks/complete/<%= task.id %>" method="POST" class="complete-form">
+                    <button type="submit">Complete</button>
+                </form>
+            </li>
+             <!-- Form for deleting task -->
+             <form action="/tasks/delete/<%= task.id %>" method="POST" class="delete-form">
+                <button type="submit">Delete Task</button>
+            </form>
+        <% }); %>
+    </ul>
+</section>
+
+    </main>
+
+    <footer>
+        &copy; 2023 Task Manager App
+    </footer>
+</body>
+</html>

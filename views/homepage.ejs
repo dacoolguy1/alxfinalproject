@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Taskify</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Taskify</div>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Tasks</a></li>
+                <li><a href="#">Profile</a></li>
+                <li><a href="#">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h1>Welcome to Taskify</h1>
+            <p>Effortlessly manage your tasks.</p>
+        </section>
+
+        <section class="login-form">
+          
+            <h2>Login</h2>
+            <form action="/login" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                <% if (locals.messages.error) { %>
+                    <div class="error-message">
+                        <%= locals.messages.error[0] %>
+                    </div>
+                <% } %>
+                
+
+                <button type="submit">Login</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        &copy; 2023 Task Manager App
+    </footer>
+</body>
+</html>
