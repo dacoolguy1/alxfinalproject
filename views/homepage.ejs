@@ -34,12 +34,11 @@
                 
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-                <% if (locals.messages.error) { %>
+                <% if (messages.error) { %>
                     <div class="error-message">
-                        <%= locals.messages.error[0] %>
+                        <%= messages.error[0] %>
                     </div>
-                <% } %>
-                
+                <% } %> 
 
                 <button type="submit">Login</button>
             </form>

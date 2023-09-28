@@ -7,7 +7,6 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const flash = require('express-flash'); // Add this line
-const serverless = require("serverless-http");
 
 
 const app = express();
@@ -29,8 +28,8 @@ passport.use(new LocalStrategy(
   (username, password, done) => {
     db.get('SELECT * FROM users WHERE username = ?', username, (err, user) => {
       if (err) return done(err);
-      if (!user) return done(null, false, { message: 'Incorrect username.' }, req.flash('error', 'Incorrect username.'));
-      if (!bcrypt.compareSync(password, user.password)) return done(null, false, { message: 'Incorrect password.' }, req.flash('error', 'Incorrect Password.'));
+      if (!user) return done(null, false, { message: 'Incorrect username.' });
+      if (!bcrypt.compareSync(password, user.password)) return done(null, false, { message: 'Incorrect password.' });
       return done(null, user);
     });
   }
@@ -97,7 +96,9 @@ app.post('/register', (req, res) => {
         if (existingUser) {
             // Username already exists, send an error message
             req.flash('error', 'Username already exists.')
-            return res.status(400).json({ message: 'Username already exists.' });
+            return res.render("register");
+                   
+            // return res.status(400).json({ message: 'Username already exists.' });
         }
 
         // Generate a salt
@@ -127,7 +128,8 @@ app.post('/register', (req, res) => {
                         req.flash('error', 'Registeration Unsuncessful.')
                         return res.status(500).json({ message: 'Registration insertion failed.' });
                     }
-                    return res.status(201).json({ message: 'Registration successful.' });
+                    return res.render("homepage");
+                    // return res.status(201).json({ message: 'Registration successful.' });
                 });
             });
         });
@@ -248,9 +250,7 @@ app.post('/tasks/delete/:id', ensureAuthenticated, (req, res) => {
 });
 
 // ...
-// Export the app and the serverless function
-module.exports = app;
-module.exports.handler = serverless(app);
+
   
 app.listen(port, () => {
     
