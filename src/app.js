@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const sqlite3 = require('sqlite3').verbose();
 const flash = require('express-flash'); // Add this line
+const serverless = require("serverless-http");
 
 
 const app = express();
@@ -247,7 +248,9 @@ app.post('/tasks/delete/:id', ensureAuthenticated, (req, res) => {
 });
 
 // ...
-
+// Export the app and the serverless function
+module.exports = app;
+module.exports.handler = serverless(app);
   
 app.listen(port, () => {
     
